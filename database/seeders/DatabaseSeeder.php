@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
 			//Вставит по 1-5 тегов к каждому посту: по несколько записей в таблицу тегов. Т.е. у каждого сообщения теперь будет по несколько случайных тегов
 			$tagsIds = $tags->random(random_int(1,5))->pluck('id');
 			// Здесь обучали поставить просто цифру 5: но я выше попробовал сделать лучше
-			$tagsIds = $tags->random(5)->pluck('id');
+			//$tagsIds = $tags->random(5)->pluck('id');
 			$post->tags()->attach($tagsIds);
 		}
         // \App\Models\User::factory(10)->create();

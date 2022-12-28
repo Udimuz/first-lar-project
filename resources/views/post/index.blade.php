@@ -21,5 +21,5 @@
         @endif
         <div>Likes: {{ $post->likes }}</div>
     @endforeach
-    <div class="mt-4">{{ $posts->links() }}</div>
+    <div class="mt-4">{{ $posts->withQueryString()->links() }}</div>
 @endsection
