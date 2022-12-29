@@ -58,6 +58,16 @@ Route::group(['namespace'=>'App\Http\Controllers\Post'], function(){
 	Route::delete('/posts/{post}', 'DestroyController')->name('post.delete');
 });
 
+// prefix добавит везде к ссылке впереди адрес "/admin/"
+Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix'=>'admin'], function() {
+	//Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('main.index');
+	//Route::get('/admin', 'IndexController')->name('main.index');
+	Route::group(['namespace'=>'Post'], function(){
+		// Чтобы страница запускалась по адресу "/admin/post"
+		Route::get('/post', 'IndexController')->name('admin.post.index');
+	});
+});
+
 // Route обладает функцией колбак, проще говоря - Ответ на наш запрос:	например "PostController - index"
 //Route::get('/post', [App\Http\Controllers\PostController::class, 'index']);
 
