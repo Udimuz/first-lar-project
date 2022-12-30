@@ -8,6 +8,7 @@
 //use App\Http\Controllers\Post\ShowController;
 //use App\Http\Controllers\Post\StoreController;
 //use App\Http\Controllers\Post\UpdateController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers;
@@ -100,3 +101,6 @@ Route::get('/kto', function () {
 	return 'Начинающий монах';
 	//return view('welcome');
 });
+
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <title>Изучаем Laravel</title>
+    <title>{{ config('app.name', 'Учим Laravel') }}</title>
 </head>
 <body>
 <div class="container">
