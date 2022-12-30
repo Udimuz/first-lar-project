@@ -18,6 +18,9 @@ class IndexController extends BaseController
 //		$posts = Post::all();
 //		return view('post.index', compact('posts'));
 
+		// Здесь проверял работу Policy, проверку на админа:
+		//$this->authorize('view', auth()->user());
+
 		// Фильтрация - делаем отсеивание данных:
 		$data = $request->validated();
 

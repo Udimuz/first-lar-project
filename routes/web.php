@@ -60,7 +60,7 @@ Route::group(['namespace'=>'App\Http\Controllers\Post'], function(){
 });
 
 // prefix добавит везде к ссылке впереди адрес "/admin/"
-Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix'=>'admin'], function() {
+Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix'=>'admin', 'middleware'=>'admin'], function() {
 	//Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('main.index');
 	//Route::get('/admin', 'IndexController')->name('main.index');
 	Route::group(['namespace'=>'Post'], function(){
@@ -98,9 +98,9 @@ Route::get('/post/update_or_create', [App\Http\Controllers\PostController::class
 //});
 
 Route::get('/kto', function () {
-	return 'Начинающий монах';
+	return 'Попытка входа без прав админа';
 	//return view('welcome');
-});
+})->name('wrong');
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
