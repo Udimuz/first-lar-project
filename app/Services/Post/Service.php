@@ -8,7 +8,7 @@ use App\Models\Tag;
 class Service
 {
 	// Теперь вся реализация с Базой данных у меня прописана в этом методе:
-	public function store($data): void
+	public function store($data)
 	{
 		$tags = $data['tags'];
 		unset($data['tags']);	// Нужно очистить этот элемент, иначе выйдет ошибка, при добавлении в базу, так как в этом элементе - массив
@@ -23,6 +23,8 @@ class Service
 //			]);
 		// Или так: Но это не вставит данные во временные поля: время создания, изменения. Да и эти поля обычно не нужны, их удаляют
 		$post->tags()->attach($tags);
+
+		return $post;
 	}
 
 	public function update($post, $data): void
@@ -31,9 +33,9 @@ class Service
 		unset($data['tags']);	// Нужно очистить этот элемент, иначе выйдет ошибка, при добавлении в базу, так как в этом элементе - массив
 
 		$post->update($data);
-		//$post = $post->fresh();
 		// Нужно чтобы все старые Теги удалялись. И добавлялись Теги которые приходят:
 		$post->tags()->sync($tags);
+		//$post = $post->fresh();
 	}
 
 	public function list_of_posts(): array

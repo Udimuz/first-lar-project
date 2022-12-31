@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\StoreRequest;
+use App\Http\Resources\Post\PostResource;
 use App\Models\Post;
 
 class StoreController extends BaseController
@@ -14,7 +15,16 @@ class StoreController extends BaseController
 		// Как я понял, туда ещё можно обращаться так:	указав необходимые для проверки параметры. only() вместо validated(). Увидел, что у некоторых программистов обращение к Request идёт так. Какая-то более строгая проверка чтоли
 		//$data = $request->only(['title','content','image','category_id','tags']);
 
-		$this->service->store($data);	// Теперь, всю работу с $data можно делать в сервисах
+		$post = $this->service->store($data);	// Теперь, всю работу с $data можно делать в сервисах
+		//dd($post);
+
+//		$arr = [
+//			'title' => $post->title,
+//			'content' => $post->content,
+//			'image' => $post->image,
+//		];
+//		return $arr;
+		//return new PostResource($post);
 
 		// После добавления данных, лучше перенаправить на другую страницу:
 		return redirect()->route('post.index');

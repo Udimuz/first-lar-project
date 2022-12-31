@@ -1,7 +1,10 @@
 <h3>First Laravel project</h3>
-<br>
----
+<hr>
 - Авторизация - подключена
+<br>
 - Middleware
+  <br>
 - Policy
+  <br>
+- Resource
 
