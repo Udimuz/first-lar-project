@@ -2,8 +2,11 @@
 
 namespace App\Services\Post;
 
+use App\Http\Filters\PostFilter;
+use App\Http\Requests\Post\FilterRequest;
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Service
 {
@@ -36,6 +39,20 @@ class Service
 		// Нужно чтобы все старые Теги удалялись. И добавлялись Теги которые приходят:
 		$post->tags()->sync($tags);
 		//$post = $post->fresh();
+	}
+
+	public function posts_list(FilterRequest $request): LengthAwarePaginator
+	{
+		// Фильтрация - делаем отсеивание данных:
+		$data = $request->validated();
+
+		$page = $data['page'] ?? 1;		// Так отлавливается, какая страница на данный момент открыта
+		$perPage = $data['per_page'] ?? 10;
+		// Не забыть эти параметры 'page', 'per_page' добавить в фильтр FilterRequest
+
+		$filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
+
+		return Post::filterPaginate($filter, $perPage, $page);
 	}
 
 	public function list_of_posts(): array

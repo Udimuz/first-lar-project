@@ -59,7 +59,7 @@ Route::group(['namespace'=>'App\Http\Controllers\Post'], function(){
 	Route::delete('/posts/{post}', 'DestroyController')->name('post.delete');
 });
 
-// prefix добавит везде к ссылке впереди адрес "/admin/"
+// prefix добавит везде к ссылке впереди адрес "/admin/". Это чтобы не создавать такие роуты '/admin/post', '/admin/add', а сократить
 Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix'=>'admin', 'middleware'=>'admin'], function() {
 	//Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('main.index');
 	//Route::get('/admin', 'IndexController')->name('main.index');

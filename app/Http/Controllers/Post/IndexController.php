@@ -12,10 +12,46 @@ use Illuminate\Http\Request;
 
 class IndexController extends BaseController
 {
-	//	http://first-proj/posts?category_id=4	http://first-proj/posts?category_id=4&title=am
+	//	http://first-proj/posts?category_id=4	http://first-proj/posts?category_id=4&title=am	http://first-project/posts?category_id=4&title=a&page=2
 	//public function __invoke(Request $request)
-	public function __invoke(FilterRequest $request)	// Этот метод "__invoke" в ООП у PHP вызывается каждый раз когда идёт обращение к классу
-	{
+	// метод "__invoke" в ООП у PHP вызывается каждый раз когда идёт обращение к классу
+
+	// Указать взаимоотношения с другими моделями:
+
+	//	http://first-project/posts?page=4
+
+	public function __invoke(FilterRequest $request) {
+		// 05.01.2023 попробовал перенести работу в сервисы:
+		$posts = $this->service->posts_list($request);
+		return view('post.index_scope', compact('posts'));
+	}
+
+	public function __invoke_2(FilterRequest $request) {
+
+		// Фильтрация - делаем отсеивание данных:
+		$data = $request->validated();
+
+		$page = $data['page'] ?? 1;		// Так отлавливается, какая страница на данный момент открыта
+		$perPage = $data['per_page'] ?? 10;
+		// Не забыть эти параметры 'page', 'per_page' добавить в фильтр FilterRequest
+
+		$filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
+
+		$posts = Post::filterPaginate($filter, $perPage, $page);
+		//$posts = Post::filter($filter)->with('tags', 'categrs')->paginate($perPage, ['*'], 'page', $page);
+		// Можно вызывать filter() обращаясь к классу Post потому что мы создали трейт Filterable и передали ему в класс сообщений Post.php
+		return view('post.index_scope', compact('posts'));
+	}
+
+	// Тоже работает, только без фильтра:
+	public function __invoke_1() {
+		// СКОП allPaginate запускается в модели Article - scopeLastLimit()
+		//$posts = Post::allPaginate(10);
+		$posts = Post::with('tags', 'categrs')->paginate(10);
+		return view('post.index_scope', compact('posts'));
+	}
+
+	public function __invoke_old(FilterRequest $request) {
 //		$posts = Post::all();
 //		return view('post.index', compact('posts'));
 
@@ -55,6 +91,7 @@ class IndexController extends BaseController
 //		$posts = Post::paginate(10);
 
 
+		// Этот массив в шаблоне, похоже, и не использовался:
 		$tags = Tag::all();
 
 
